@@ -1,0 +1,119 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: The template will setup fargate ECS container running wordpress CMS for conluo
+
+Parameters:
+  ArtifactsBucket:
+    Type: String
+    Description: Name of the bucket to store artifacts
+  AliasName:
+    Type: String
+    Description: Alias for the cloudfront
+  ACMCertificateArn:
+    Type: String
+    Description: ARN of the ACM Certificate for the alias
+  HostedZoneId:
+    Type: String
+    Description: Id of the hostedzone where the alias belongs
+
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      BucketName: !Ref ArtifactsBucket   
+  OriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties: 
+      CloudFrontOriginAccessIdentityConfig: 
+        Comment: Origin access identiy for conluo-web cloudfront
+  Cloudfront:
+    Type: AWS::CloudFront::Distribution
+    DependsOn:
+    - S3Bucket
+    - OriginAccessIdentity
+    Properties: 
+      DistributionConfig: 
+        Comment: Static website hosted in s3 exposed via cloudfront
+        Aliases:
+        - !Ref AliasName
+        ViewerCertificate:
+          AcmCertificateArn: !Ref ACMCertificateArn
+          MinimumProtocolVersion: TLSv1.2_2018
+          SslSupportMethod: sni-only
+        Origins:
+          - DomainName: !GetAtt S3Bucket.RegionalDomainName
+            Id: bucket
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${OriginAccessIdentity}
+        PriceClass: PriceClass_All
+        DefaultRootObject: index.html
+        Enabled: true
+        HttpVersion: http2
+        DefaultCacheBehavior:
+          AllowedMethods: 
+          - GET
+          - HEAD
+          Compress: true
+          DefaultTTL: 300
+          MaxTTL: 300
+          MinTTL: 0
+          TargetOriginId: bucket
+          ViewerProtocolPolicy: redirect-to-https
+          ForwardedValues:
+            Cookies:
+              Forward: all
+            QueryString: true
+        CustomErrorResponses:
+        - ErrorCode: 403
+          ResponseCode: 200
+          ResponsePagePath: /index.html
+        - ErrorCode: 404
+          ResponseCode: 200
+          ResponsePagePath: /index.html
+  CloudfrontBucketAccessPolicy:
+    Type: AWS::S3::BucketPolicy
+    DependsOn:
+    - S3Bucket
+    - Cloudfront
+    Properties: 
+      Bucket: !Ref ArtifactsBucket
+      PolicyDocument: 
+        Statement:
+          -
+            Action:
+            - s3:GetObject
+            Effect: Allow
+            Resource: !Sub 'arn:aws:s3:::${ArtifactsBucket}/*'
+            Principal: 
+              CanonicalUser: !GetAtt OriginAccessIdentity.S3CanonicalUserId
+  DnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties: 
+      AliasTarget: 
+        DNSName: !GetAtt Cloudfront.DomainName
+        HostedZoneId: Z2FDTNDATAQYW2
+        #This is always the hosted zone ID when you create an alias record that routes traffic to a CloudFront distribution.
+      Comment: Record for cloudfront distribution for static website
+      HostedZoneId: !Ref HostedZoneId
+      Name: !Ref AliasName
+      Type: A
+
+Outputs:
+  S3BucketName:
+    Description: Name of the S3 bucket created
+    Value: conluo-web
+  S3BucketRegionalDomainName:
+    Description: Bucket regional domain name
+    Value: !GetAtt S3Bucket.RegionalDomainName
+  CloudfrontUrl:
+    Description: Cloudfront url of the website
+    Value: !GetAtt Cloudfront.DomainName
+  HostedUrl:
+    Description: Hosted address of the website
+    Value: !Ref AliasName
+  DistributionId:
+    Description: Id of the cloudfront distribution id
+    Value: !Ref Cloudfront

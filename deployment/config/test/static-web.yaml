@@ -1,0 +1,7 @@
+template_path: static-web.yaml
+
+parameters:
+  ArtifactsBucket: !environment_variable TEST_S3_BUCKET
+  AliasName: !environment_variable TEST_URL
+  ACMCertificateArn: !environment_variable CERTIFICATE_ARN
+  HostedZoneId: !environment_variable HOSTED_ZONE_ID

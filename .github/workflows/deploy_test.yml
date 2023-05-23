@@ -1,0 +1,46 @@
+name: AWS Cloudformation Deployment
+
+on:
+  push:
+    branches:
+    - release
+
+env:
+  TEMPLATE: template.yml
+  AWS_STACK_NAME: test-kommune-okr
+  AWS_ACCESS_KEY_ID: ${{secrets.TEST_AWS_ACCESS_KEY_ID}}
+  AWS_SECRET_ACCESS_KEY: ${{secrets.TEST_AWS_SECRET_ACCESS_KEY}}
+  AWS_REGION: eu-west-1
+  HOSTED_ZONE_ID: ${{secrets.TEST_HOSTED_ZONE_ID}}
+  DEV_URL: okr.test.dcx.no
+  CERTIFICATE_ARN: ${{secrets.TEST_CERTIFICATE_ARN}}
+  DEV_S3_BUCKET: test-kommune-okr
+
+jobs:
+  deploy_infra:
+    name: Build and Deploy
+    runs-on: self-hosted
+    steps:
+    # checkout this repo
+    - name: Install Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.x
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Build code
+      run: |
+        npm install
+        npm run build
+    - name: Run deploy Script in test
+      run: |
+        cd deployment
+        bash script.sh test
+    - name: Upload Artifacts to test
+      run: |
+        ls -al
+        aws s3 cp --recursive ./build s3://test-kommune-okr-api/
+    - name: Invalidating cache in test
+      run: |
+        cd deployment
+        bash invalidate-cache.sh test

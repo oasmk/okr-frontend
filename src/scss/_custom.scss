@@ -1,0 +1,283 @@
+// Here you can add other styles
+@import  "mixin";
+
+
+.tablehead {
+    color: rgb(146, 146, 146);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: open sans;
+    border: none;
+    opacity: 0.7;
+}
+.tablepara {
+    color: #2B2859;
+    font-size: 13px;
+    font-weight: 400;
+    font-family: open sans;
+    border: none;
+}
+
+.mainhead {
+
+    @include mainbox;
+    color: #2B2859;
+
+}
+.subhead{
+    @include subhead;
+    color: $blueColor;
+}
+.adminpara{
+    @include adminpara;
+    margin-top: 10px;
+}
+
+.outlineButton {
+    @include normalpara;
+    border: 2px solid $blueColor;
+    border-radius: 0;
+    background-color: transparent;
+  }
+.outlineButton2 {
+    @include normalpara;
+    border: 2px solid #F9C66B;
+    border-radius: 0;
+    background-color: transparent;
+  }
+
+  .formlabel{
+      @include clabel;
+      color: $blueColor;
+  }
+  .formlabel1{
+      @include clabel;
+      color: $blueColor;
+      border-bottom: 1px solid #E0E6EF;
+      width: 200px;
+  }
+  .formtext{
+      @include ctext;
+      color: $blueColor;
+  }
+  .lighttext{
+      @include ctext;
+      color: #A4A4A4;
+  }
+.fadeOut{
+    opacity:0;
+    width:0;
+    height:0;
+    transition: width 0.5s 0.5s, height 0.5s 0.5s, opacity 0.5s;
+
+}
+.fadeIn{
+    opacity:1;
+    width:100px;
+    height:100px;
+    transition: width 0.5s, height 0.5s, opacity 0.5s 0.5s;
+
+}
+
+.chip{
+    background-color: green;
+    color: purple;
+}
+._7ahQImyV4dj0EpcNOjnwA{
+    background-color: red;
+    color: purple;
+}
+.documentpara {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    text-decoration-line: underline;
+    color: #2B2859;
+}
+.percenttext{
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    color: #1E43AA;
+}
+
+.totalbudgettext{
+    @include adminpara;
+}
+.personname{
+    font-family: Open Sans;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 25px;
+    letter-spacing: 0px;
+    color: #2B2859;
+}
+
+.persondesig{
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    color: #2B2859;
+}
+.persontask{
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    // text-align: right;
+    color: #2B2859;
+}
+
+.smallbox {
+    background: #FFFFFF;
+    border: 1px solid #E0E6EF;
+    box-sizing: border-box;
+}
+.comment{
+    padding: 16px;
+    background: rgba(224, 230, 239, 0.4);
+    border-radius: 8px;
+}
+.commentdate{
+    @include normalpara;
+    color: #A4A4A4;
+}
+.usertitle{
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 18px;
+    color: #2B2859;
+}
+.normalicon2{
+    transform: translate(-20px,25px);
+ 
+ 
+   }
+
+   .removepara{
+       @include normalpara;
+       color: #2C2C2C;
+   }
+
+   /*  for upload profile image start */
+.wrapper{
+    height: 100px;
+    width: 100px;
+    // background: url("https://i.pinimg.com/originals/63/f7/e9/63f7e99d2bdb21c005ce2debca4c3a9e.jpg");
+    border-radius: 50%;
+    background-size:cover;
+    overflow: hidden;
+
+}
+.my_file{
+    position: absolute;
+    bottom: 0;
+    outline: none;
+    color: transparent;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px 80px;
+    cursor: pointer;
+    transition: 0.5s;
+
+
+}
+.my_file::-webkit-file-upload-button{
+    visibility: hidden;
+}
+.my_file::before{
+    content: url("../views/all_icon/pencil.svg");
+    display: inline;
+}
+
+   /*  for upload profile image */
+
+.imagediv{
+    height: 20px;
+    width: 20px;
+    margin-top: 5px;
+    background: url("../views/all_icon/gallery.png");
+    background-size:cover;
+    overflow: hidden;
+}
+   .imagefile{
+    position: absolute;
+    // right: 200;
+    left: 0;
+
+    bottom: 0;
+    // margin-left: -50px;
+    outline: none;
+    color: transparent;
+    width: 40px;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 0px 0px;
+    cursor: pointer;
+    transition: 0.5s;
+
+
+}
+.imagefile::-webkit-file-upload-button{
+    visibility: hidden;
+}
+
+
+/* for attchment of document */
+.attachdiv{
+    height: 20px;
+    width: 22px;
+    position: absolute;
+    bottom: 0;
+    background: url("../views/all_icon/attach.png");
+    background-size:cover;
+    overflow: hidden;
+}
+   .attachfile{
+    position: absolute;
+    // right: 200;
+    left: 0;
+
+    bottom: 0;
+    // margin-left: -50px;
+    outline: none;
+    color: transparent;
+    width: 40px;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 0px 0px;
+    cursor: pointer;
+    transition: 0.5s;
+
+
+}
+.attachfile::-webkit-file-upload-button{
+    visibility: hidden;
+}
+
+
+
+.ourmainheader{
+    @media (min-width: 992px) { 
+        background:blue;
+    }
+}
+
+.accessbtn::-moz-focus-inner {
+    border: 0;
+ }
+.accessbtn:focus{
+    border: "5px solid black";
+ }
+.accessbtn:active{
+    border: "5px solid black";
+ }

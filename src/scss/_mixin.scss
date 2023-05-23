@@ -1,0 +1,49 @@
+@mixin mainbox {
+    font-family: Open Sans;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+
+
+}
+@mixin subhead {
+    //styleName: Heading/H2;
+    font-family: Open Sans;
+    font-size: 16px;
+    // font-style: 700;
+    font-weight: 700;
+}
+
+@mixin normalpara {
+      color: $blueColor;
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 13px;
+      
+  }
+
+  @mixin clabel {
+    font-family: Open Sans;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  @mixin ctext {
+    font-family: Open Sans;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+  }
+@mixin adminpara {
+ //styleName: Body/Body 3;
+font-family: Open Sans;
+font-size: 18px;
+font-style: normal;
+font-weight: 600;
+line-height: 25px;
+letter-spacing: 0px;
+text-align: right;
+
+}
